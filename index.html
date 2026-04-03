@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAT MD BOT</title>
+
+    <link rel="stylesheet" href="styles/style.css">
+
+    <style>
+        input {
+            padding: 10px;
+            width: 200px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #22c55e;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🤖 SAT MD BOT</h1>
+    <p>Advanced WhatsApp Bot for Students & Business</p>
+</header>
+
+<section class="info">
+    <h2>📌 Bot Information</h2>
+    <ul>
+        <li><b>Owner:</b> Simbarashe Tembo.A</li>
+        <li><b>Version:</b> 3.0.0</li>
+        <li><b>Commands:</b> 387+</li>
+        <li><b>Prefix:</b> .</li>
+        <li><b>Mode:</b> Public</li>
+    </ul>
+</section>
+
+<!-- 🔐 PAIR SYSTEM -->
+<section>
+    <h2>🔗 Connect WhatsApp</h2>
+
+    <input type="text" id="number" placeholder="260772697513" />
+    <br><br>
+
+    <button onclick="pair()">Generate Pair Code</button>
+
+    <h3 id="code"></h3>
+</section>
+
+<section class="commands">
+    <h2>📜 Commands</h2>
+
+    <div class="card">
+        <h3>🤖 AI</h3>
+        <p>.gpt, .research, .imagine</p>
+    </div>
+
+    <div class="card">
+        <h3>🎓 Education</h3>
+        <p>.pastpaper, .textbook</p>
+    </div>
+
+    <div class="card">
+        <h3>🎵 Downloader</h3>
+        <p>.play</p>
+    </div>
+
+    <div class="card">
+        <h3>🛡️ Group</h3>
+        <p>.antilink</p>
+    </div>
+
+    <div class="card">
+        <h3>⚙️ System</h3>
+        <p>.ping, .menu</p>
+    </div>
+</section>
+
+<!-- 📊 DASHBOARD -->
+<section>
+    <h2>📊 Bot Dashboard</h2>
+
+    <p>Status: <span id="status">Loading...</span></p>
+    <p>Commands: <span id="commands">...</span></p>
+    <p>Owner: <span id="owner">...</span></p>
+</section>
+
+<section class="join">
+    <h2>📱 Join Our WhatsApp Channel</h2>
+    <a href="https://whatsapp.com/channel/0029VbCHC3dIt5s59dq0u92e" target="_blank">
+        Join Now
+    </a>
+</section>
+
+<footer>
+    <p>© 2026 SAT MD BOT | Built by Simbarashe Tembo</p>
+</footer>
+
+<!-- ⚡ SCRIPTS -->
+<script>
+async function pair() {
+    let number = document.getElementById("number").value;
+
+    let res = await fetch("http://localhost:3000/pair?number=" + number);
+    let data = await res.json();
+
+    document.getElementById("code").innerText = "Code: " + data.code;
+}
+
+async function loadDashboard() {
+    let res = await fetch("http://localhost:3000/status");
+    let data = await res.json();
+
+    document.getElementById("status").innerText = data.status;
+    document.getElementById("commands").innerText = data.commands;
+    document.getElementById("owner").innerText = data.owner;
+}
+
+setInterval(loadDashboard, 3000);
+</script>
+
+</body>
+</html>
