@@ -1,5 +1,9 @@
+//-----edit by nimeshka mihiran-----//
+
 const { default: makeWASocket, useMultiFileAuthState } = require("@whiskeysockets/baileys");
 const pino = require("pino");
+const express = require("express");
+const path = require("path");
 const handler = require("./handler");
 
 async function startBot() {
@@ -23,3 +27,16 @@ async function startBot() {
 }
 
 startBot();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(express.static(__dirname));
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+});
+
+app.listen(PORT, () => {
+    console.log(`🌐 Web running on http://localhost:${PORT}`);
+});
