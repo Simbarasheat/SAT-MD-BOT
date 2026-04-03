@@ -1,4 +1,3 @@
-```markdown
 # 🤖 SAT MD BOT
 
 ### Advanced Multi-Device WhatsApp Bot for Students & Business
@@ -20,6 +19,10 @@
 ## 👑 OWNER
 
 - **Simbarashe Tembo.A**
+
+## 🫂 PARTNERS 
+
+- **MEZUKA MD DEVELOPERS**
 
 ---
 
