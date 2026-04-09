@@ -1,35 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAT MD BOT</title>
+    <title>SAT MD BOT</title><link rel="stylesheet" href="styles/style.css">
 
-    <link rel="stylesheet" href="styles/style.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
 
-    <style>
-        input {
-            padding: 10px;
-            width: 200px;
-        }
+    input {
+        padding: 10px;
+        width: 220px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
 
-        button {
-            padding: 10px 20px;
-            background: #22c55e;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
-</head>
+    button {
+        padding: 10px 20px;
+        background: #22c55e;
+        border: none;
+        cursor: pointer;
+        color: white;
+        border-radius: 5px;
+    }
 
-<body>
+    button:hover {
+        background: #16a34a;
+    }
 
-<header>
+    .card {
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    #code {
+        color: #22c55e;
+    }
+</style>
+
+</head><body><header>
     <h1>🤖 SAT MD BOT</h1>
     <p>Advanced WhatsApp Bot for Students & Business</p>
-</header>
-
-<section class="info">
+</header><section class="info">
     <h2>📌 Bot Information</h2>
     <ul>
         <li><b>Owner:</b> Simbarashe Tembo.A</li>
@@ -37,92 +53,105 @@
         <li><b>Commands:</b> 387+</li>
         <li><b>Prefix:</b> .</li>
         <li><b>Mode:</b> Public</li>
+        <li><b>Partners:</b> MEZUKA MD DEVELOPERS</li>
     </ul>
-</section>
+</section><!-- 🔐 PAIR SYSTEM --><section>
+    <h2>🔗 Connect WhatsApp</h2><input type="text" id="number" placeholder="260XXXXXXXXX" />
+<br><br>
 
-<!-- 🔐 PAIR SYSTEM -->
-<section>
-    <h2>🔗 Connect WhatsApp</h2>
+<button onclick="pair()">Generate Pair Code</button>
 
-    <input type="text" id="number" placeholder="260772697513" />
-    <br><br>
+<h3 id="code">Enter number and click button</h3>
 
-    <button onclick="pair()">Generate Pair Code</button>
+</section><section class="commands">
+    <h2>📜 Commands</h2><div class="card">
+    <h3>🤖 AI</h3>
+    <p>.gpt, .research, .imagine</p>
+</div>
 
-    <h3 id="code"></h3>
-</section>
+<div class="card">
+    <h3>🎓 Education</h3>
+    <p>.pastpaper, .textbook</p>
+</div>
 
-<section class="commands">
-    <h2>📜 Commands</h2>
+<div class="card">
+    <h3>🎵 Downloader</h3>
+    <p>.play</p>
+</div>
 
-    <div class="card">
-        <h3>🤖 AI</h3>
-        <p>.gpt, .research, .imagine</p>
-    </div>
+<div class="card">
+    <h3>🛡️ Group</h3>
+    <p>.antilink</p>
+</div>
 
-    <div class="card">
-        <h3>🎓 Education</h3>
-        <p>.pastpaper, .textbook</p>
-    </div>
+<div class="card">
+    <h3>⚙️ System</h3>
+    <p>.ping, .menu</p>
+</div>
 
-    <div class="card">
-        <h3>🎵 Downloader</h3>
-        <p>.play</p>
-    </div>
+</section><!-- 📊 DASHBOARD --><section>
+    <h2>📊 Bot Dashboard</h2><p>Status: <span id="status">Loading...</span></p>
+<p>Commands: <span id="commands">Loading...</span></p>
+<p>Owner: <span id="owner">Loading...</span></p>
 
-    <div class="card">
-        <h3>🛡️ Group</h3>
-        <p>.antilink</p>
-    </div>
-
-    <div class="card">
-        <h3>⚙️ System</h3>
-        <p>.ping, .menu</p>
-    </div>
-</section>
-
-<!-- 📊 DASHBOARD -->
-<section>
-    <h2>📊 Bot Dashboard</h2>
-
-    <p>Status: <span id="status">Loading...</span></p>
-    <p>Commands: <span id="commands">...</span></p>
-    <p>Owner: <span id="owner">...</span></p>
-</section>
-
-<section class="join">
+</section><section class="join">
     <h2>📱 Join Our WhatsApp Channel</h2>
     <a href="https://whatsapp.com/channel/0029VbCHC3dIt5s59dq0u92e" target="_blank">
         Join Now
     </a>
-</section>
-
-<footer>
+</section><footer>
     <p>© 2026 SAT MD BOT | Built by Simbarashe Tembo</p>
-</footer>
+</footer><!-- ⚡ SCRIPTS --><script>
+const API_BASE = "https://YOUR-RENDER-URL.onrender.com"; // 🔥 CHANGE THIS
 
-<!-- ⚡ SCRIPTS -->
-<script>
 async function pair() {
     let number = document.getElementById("number").value;
+    let codeBox = document.getElementById("code");
 
-    let res = await fetch("http://localhost:3000/pair?number=" + number);
-    let data = await res.json();
+    if (!number) {
+        codeBox.innerText = "❌ Enter phone number";
+        return;
+    }
 
-    document.getElementById("code").innerText = "Code: " + data.code;
+    codeBox.innerText = "⏳ Generating code...";
+
+    try {
+        let res = await fetch(API_BASE + "/pair", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ number })
+        });
+
+        let data = await res.json();
+
+        if (data.status) {
+            codeBox.innerText = "✅ Code: " + data.code;
+        } else {
+            codeBox.innerText = "❌ " + data.message;
+        }
+
+    } catch (err) {
+        codeBox.innerText = "❌ Server error";
+    }
 }
 
 async function loadDashboard() {
-    let res = await fetch("http://localhost:3000/status");
-    let data = await res.json();
+    try {
+        let res = await fetch(API_BASE + "/status");
+        let data = await res.json();
 
-    document.getElementById("status").innerText = data.status;
-    document.getElementById("commands").innerText = data.commands;
-    document.getElementById("owner").innerText = data.owner;
+        document.getElementById("status").innerText = data.status || "offline";
+        document.getElementById("commands").innerText = data.commands || "387+";
+        document.getElementById("owner").innerText = data.owner || "Simbarashe Tembo";
+
+    } catch {
+        document.getElementById("status").innerText = "offline";
+    }
 }
 
-setInterval(loadDashboard, 3000);
-</script>
-
-</body>
+setInterval(loadDashboard, 5000);
+loadDashboard();
+</script></body>
 </html>
