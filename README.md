@@ -139,6 +139,10 @@ node index.js
 
 ---
 
+## 🤖 Deployment 
+
+https://sat-md-bot.vercel.app/
+
 ## ⚠️ IMPORTANT
 
 * Do NOT share your `auth` folder
