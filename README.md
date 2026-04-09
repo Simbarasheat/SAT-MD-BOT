@@ -139,9 +139,19 @@ node index.js
 
 ---
 
-## 🤖 Deployment 
+### 🤖 Deployment 
 
 https://sat-md-bot.vercel.app/
+
+<p align="center">
+  <a href="https://sat-md-bot.vercel.app/" target="_blank">
+    <img 
+      src="https://img.shields.io/badge/🚀 Deploy_from_Free_VPS-ffI0XOI?style=for-the-badge&logo=github&logoColor=white" 
+      alt="Deploy Button"
+      width="280"
+    >
+  </a>
+</p>
 
 ## ⚠️ IMPORTANT
 
