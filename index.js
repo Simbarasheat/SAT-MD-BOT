@@ -2,41 +2,60 @@
 
 const { default: makeWASocket, useMultiFileAuthState } = require("@whiskeysockets/baileys");
 const pino = require("pino");
-const express = require("express");
-const path = require("path");
 const handler = require("./handler");
 
+let sock = null;
+let botReady = false;
+
 async function startBot() {
-    const { state, saveCreds } = await useMultiFileAuthState("auth");
+    try {
+        const { state, saveCreds } = await useMultiFileAuthState("auth");
 
-    const sock = makeWASocket({
-        logger: pino({ level: "silent" }),
-        auth: state
-    });
+        sock = makeWASocket({
+            logger: pino({ level: "silent" }),
+            auth: state,
+            printQRInTerminal: true
+        });
 
-    sock.ev.on("creds.update", saveCreds);
+        sock.ev.on("creds.update", saveCreds);
 
-    sock.ev.on("messages.upsert", async ({ messages }) => {
-        const msg = messages[0];
-        if (!msg.message) return;
+        sock.ev.on("connection.update", (update) => {
+            const { connection, lastDisconnect } = update;
+            if (connection === "open") {
+                console.log("✅ Bot Connected Successfully");
+                botReady = true;
+            } else if (connection === "close") {
+                console.log("❌ Bot Disconnected");
+                botReady = false;
+                if (lastDisconnect?.error?.output?.statusCode !== 401) {
+                    startBot();
+                }
+            }
+        });
 
-        handler(sock, msg);
-    });
+        sock.ev.on("messages.upsert", async ({ messages }) => {
+            if (!messages || messages.length === 0) return;
+            
+            const msg = messages[0];
+            if (!msg.message) return;
 
-    console.log("🤖 SAT MD BOT STARTED...");
+            try {
+                await handler(sock, msg);
+            } catch (err) {
+                console.error("Error handling message:", err);
+            }
+        });
+
+        console.log("🤖 SAT MD BOT STARTING...");
+    } catch (err) {
+        console.error("Error starting bot:", err);
+        setTimeout(startBot, 5000);
+    }
 }
 
-startBot();
+// Only start bot if not in Vercel environment
+if (!process.env.VERCEL) {
+    startBot();
+}
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.use(express.static(__dirname));
-
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "index.html"));
-});
-
-app.listen(PORT, () => {
-    console.log(`🌐 Web running on http://localhost:${PORT}`);
-});
+module.exports = { startBot, sock, botReady };
